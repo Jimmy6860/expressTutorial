@@ -23,10 +23,7 @@ app.get('/api/courses', (req, res) => {
 app.post('/api/courses', (req, res) => {
     const { error } = validateCourse(req.body);
 
-    if(error) {
-        res.status(400).send(error.details[0].message);
-        return;
-    };
+    if(error) return res.status(400).send(error.details[0].message);
 
     const course = {
         id: courses.length + 1,
@@ -41,15 +38,12 @@ app.put('/api/courses/:id', (req, res) => {
     // Loop up the courses
     // If not existing, return 404
     const searchedCourse = courses.find(e => e.id === parseInt(req.params.id));
-    if(!searchedCourse) res.status(404).send('Course not found');
+    if(!searchedCourse) return res.status(404).send('Course not found');
 
     // Validate
     // If invalid, return 400 - Bad request
     const { error } = validateCourse(req.body)
-    if(error) {
-        res.status(400).send(error.details[0].message);
-        return
-    }
+    if(error) return res.status(400).send(error.details[0].message);
 
     // Update course
     // Return the update course
@@ -72,7 +66,7 @@ app.delete('/api/courses/:id', (req, res) => {
 
 app.get('/api/courses/:id', (req, res) => {
     const searchedCourse = courses.find(e => e.id === parseInt(req.params.id));
-    if(!searchedCourse) res.status(404).send('Course not found');
+    if(!searchedCourse) return res.status(404).send('Course not found');
     
     res.send(searchedCourse);
 })
