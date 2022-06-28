@@ -1,15 +1,21 @@
 const Joi = require('joi');
-const logger = require('./logger')
-const authenticating = require('./authenticating')
+const morgan = require('morgan');
+const logger = require('./logger');
+const authenticating = require('./authenticating');
 const express = require('express');
 
 const app = express();
 
+console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+
 app.use(express.json());
-
 app.use(logger);
-
 app.use(authenticating);
+
+if(app.get('env') === 'development') {
+    app.use(morgan('tiny'))
+    console.log('Morgan enabled')
+}
 
 const courses = [
     {id: 1, name: 'Node.js'},
