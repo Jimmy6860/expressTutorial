@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const config = require('config');
 const morgan = require('morgan');
 const logger = require('./logger');
 const authenticating = require('./authenticating');
@@ -8,9 +9,11 @@ const app = express();
 
 console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
 
+//Middlewares
 app.use(express.json());
 app.use(logger);
 app.use(authenticating);
+
 
 if(app.get('env') === 'development') {
     app.use(morgan('tiny'))
