@@ -1,5 +1,6 @@
+const startupDebugger = require('debug')('app:startup');
+const dbDebugger = require('debug')('app:db');
 const Joi = require('joi');
-const config = require('config');
 const morgan = require('morgan');
 const logger = require('./logger');
 const authenticating = require('./authenticating');
@@ -17,7 +18,7 @@ app.use(authenticating);
 
 if(app.get('env') === 'development') {
     app.use(morgan('tiny'))
-    console.log('Morgan enabled')
+    startupDebugger('Morgan enabled...')
 }
 
 const courses = [
