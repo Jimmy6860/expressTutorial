@@ -93,7 +93,33 @@ const getCourses = async () => {
     console.log(courses);
 };
 
-getCourses();
+// Updating a Document-Query First
+// const updateCourse = async (id) => {
+//     const course = await Course.findById(id);
+//     if(!course) return;
+
+//     course.set({
+//         isPublished: true,
+//         author: 'Another Author'
+//     });
+
+//     const result = await course.save();
+//     console.log(result)
+// }
+
+// Updating a Document- Update First
+const updateCourse = async (id) => {
+    const result = await Course.findByIdAndUpdate( id, {
+        $set: {
+            author: 'Johnny',
+            isPublished: false
+        }
+    }, { new: true});
+    
+    console.log(result)
+}
+
+updateCourse('62e3d9819d32f2bc240dec57');
  
 
 //Enviroment variable
