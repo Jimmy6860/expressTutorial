@@ -119,7 +119,12 @@ const updateCourse = async (id) => {
     console.log(result)
 }
 
-updateCourse('62e3d9819d32f2bc240dec57');
+const removeCourse = async (id) => {
+    const result = await Course.deleteOne({ _id: id})
+    console.log(result);
+} 
+
+removeCourse('62e3d9819d32f2bc240dec57');
  
 
 //Enviroment variable
