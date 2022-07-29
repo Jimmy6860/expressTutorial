@@ -34,6 +34,37 @@ mongoose.connect('mongodb://localhost/playground')
     .then(() => console.log('Connected to MongoDB...'))
     .catch(err => console.log(`Could not connect to MongoDb: ${err}`))
 
+const courseSchema = new mongoose.Schema({
+    name: String,
+    author: String,
+    tags: [ String ],
+    data: { type: Date, default: Date.now},
+    isPublished: Boolean,
+})
+
+//Compiled the schema in a model
+const Course = mongoose.model('Course', courseSchema);
+
+const createCourse = async () =>  {
+    const course = new Course({
+        name: 'Angular Course',
+        author: 'Jimmy',
+        tags: ['angular', 'frontend'],
+        isPublished: true
+    });
+    
+    const result = await course.save();
+    console.log(result)
+};
+
+const getCourses = async () => {
+    const courses = await Course.find();
+    console.log(courses);
+};
+
+getCourses();
+ 
+
 //Enviroment variable
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listen to Port ${port}.....`))
