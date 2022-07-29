@@ -35,11 +35,35 @@ mongoose.connect('mongodb://localhost/playground')
     .catch(err => console.log(`Could not connect to MongoDb: ${err}`))
 
 const courseSchema = new mongoose.Schema({
-    name: String,
+    name: { 
+        type: String, 
+        required: true,
+        minLength: 2,
+        maxlength: 255,
+    },
+    category: {
+        type: String,
+        enum: ['web', 'mobile', 'network'],
+        required: true
+    },
     author: String,
-    tags: [ String ],
+    tags: { 
+        type: Array,
+        validate: {
+            validator: function(v) {
+                return v && v.length > 0;
+            },
+            message: 'A course should have a least one tag'
+        }
+    },
     data: { type: Date, default: Date.now},
     isPublished: Boolean,
+    price: {
+        type: Number,
+        required: function() { return this.isPublished; },
+        min: 10,
+        max: 900
+    }
 })
 
 //Compiled the schema in a model
@@ -48,13 +72,19 @@ const Course = mongoose.model('Course', courseSchema);
 const createCourse = async () =>  {
     const course = new Course({
         name: 'Angular Course',
-        author: 'Jimmy',
-        tags: ['angular', 'frontend'],
-        isPublished: true
+        category: 'web',
+        author: 'Alice',
+        tags: [],
+        isPublished: false
     });
     
-    const result = await course.save();
-    console.log(result)
+    try {
+        const result = await course.save();
+        console.log(result)
+    } catch (err) {
+        console.log(err)
+    }
+
 };
 
 const getCourses = async () => {
@@ -124,8 +154,8 @@ const removeCourse = async (id) => {
     console.log(result);
 } 
 
-removeCourse('62e3d9819d32f2bc240dec57');
- 
+//removeCourse('62e3d9819d32f2bc240dec57');
+ createCourse();
 
 //Enviroment variable
 const port = process.env.PORT || 3000;
