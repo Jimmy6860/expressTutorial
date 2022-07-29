@@ -58,7 +58,38 @@ const createCourse = async () =>  {
 };
 
 const getCourses = async () => {
-    const courses = await Course.find();
+    //------------> Comparison operator <--------------
+    // eq (equal)
+    // ne (not equal)
+    // gt (greater than)
+    // gte (greater than or equal to)
+    // lt (less than)
+    // lte (less than or equal to)
+    // in
+    // nin (non in)
+
+    //------------> Logical operator <--------------
+    // or
+    // and
+
+    const courses = await Course
+    //.find({ author: 'Jimmy', isPublished: true})
+    //.find({ price: { $gte: 10, $lte: 20}})
+    //.find({ price: {$in: [10, 15, 20]} })
+    //.or([ { author: 'Jimmy' }, { isPublished: true} ])
+
+    // Starts with Jimmy
+    //.find({ author: /^Jimmy/ })
+
+    // Ends with Lam
+    //.find({ author: /Lam$/i})
+
+    // Contains Jimmy
+    //.find({ author: /.*Mosh.*/i })
+    .find()
+    .limit(10)
+    .sort({ name: 1 })
+    .select({ name: 1, tags: 1});
     console.log(courses);
 };
 
