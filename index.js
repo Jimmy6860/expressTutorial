@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const logger = require('./middleware/logger');
 const authenticating = require('./authenticating');
 const express = require('express');
+const mongoose = require('mongoose');
 
 const app = express();
 
@@ -27,6 +28,11 @@ if(app.get('env') === 'development') {
 app.get('/api/posts/:year/:month', (req, res) => {
     res.send(req.params);
 })
+
+//Database
+mongoose.connect('mongodb://localhost/playground')
+    .then(() => console.log('Connected to MongoDB...'))
+    .catch(err => console.log(`Could not connect to MongoDb: ${err}`))
 
 //Enviroment variable
 const port = process.env.PORT || 3000;
